@@ -1,0 +1,23 @@
+name: Build Sneaker GCI
+
+on:
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    Build-Sneaker-GCI:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-go@v4
+              with:
+                go-version: 'stable'
+            - uses: actions/setup-node@v3
+              with:
+                node-version: 18
+                cache: 'npm'     
+            - run: ./build.sh
+            - uses: actions/upload-artifact@v3
+              with:
+                name: builds
+                path: build/
