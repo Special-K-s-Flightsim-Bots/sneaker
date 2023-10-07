@@ -1,6 +1,7 @@
 version: '3.3'
 services:
     sneaker:
+        container_name: 'sneaker'
         volumes:
             - '.\config.json:/etc/sneaker/config.json'
         ports:
