@@ -20,7 +20,7 @@ A live example of Sneaker can be viewed [here](https://sneaker.precontact.net/).
 ## Docker Container
 To build the container image, run `docker build --tag sneaker:latest .`  
 To run natively in docker, use `docker run -d -v .\config.json:/etc/sneaker/config.json -p 7788:7788 --restart unless-stopped --name sneaker sneaker:latest`  
-To run via docker-compose, use `docker compose up`
+To run via docker-compose, see [docker-compose.yml](docker-compose.yml)
 
 ## Discord Integration
 
