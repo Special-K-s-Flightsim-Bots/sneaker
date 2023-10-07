@@ -2,8 +2,9 @@ version: '3.3'
 services:
     sneaker:
         container_name: 'sneaker'
+        image: 'sneaker:latest'
+        restart: unless-stopped
         volumes:
             - '.\config.json:/etc/sneaker/config.json'
         ports:
             - '7788:7788'
-        image: 'sneaker:latest'
