@@ -18,3 +18,5 @@ yarn-error.log*
 *.bak
 *.exe
 cmd/sneaker-server/resource.syso
+build/*
+!build/.gitkeep
