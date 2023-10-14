@@ -11,8 +11,8 @@ del /F dist\*.js 2>NUL
 del /F dist\*.html 2>NUL
 del /F dist\*.css 2>NUL
 go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo@latest
-call yarn
-call yarn build
+call npm install
+call npm run build
 echo Building sneaker.exe ...
 cd cmd\sneaker-server
 go generate

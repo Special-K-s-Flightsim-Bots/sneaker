@@ -134,7 +134,7 @@ export function EntityInfo({
                   value={trackOptions?.warningRadius || ""}
                   onChange={(e) => {
                     const val = parseInt(e.target.value);
-                    if (val !== NaN) {
+                    if (!Number.isNaN(val)) {
                       setTrackOptions(entity.id, {
                         warningRadius: val,
                       });
@@ -149,7 +149,7 @@ export function EntityInfo({
                   value={trackOptions?.threatRadius || ""}
                   onChange={(e) => {
                     const val = parseInt(e.target.value);
-                    if (val !== NaN) {
+                    if (!Number.isNaN(val)) {
                       setTrackOptions(entity.id, {
                         threatRadius: val,
                       });
