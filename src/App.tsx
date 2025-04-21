@@ -13,6 +13,7 @@ import { Syria } from "./dcs/maps/Syria";
 import { Falklands } from "./dcs/maps/Falklands";
 import { Normandy } from "./dcs/maps/Normandy";
 import { TheChannel } from "./dcs/maps/TheChannel";
+import { GermanyCW } from "./dcs/maps/GermanyCW";
 import { Nevada } from "./dcs/maps/Nevada";
 import { Kola } from "./dcs/maps/Kola";
 import { Afghanistan } from "./dcs/maps/Afghanistan";
@@ -153,6 +154,8 @@ function ServerContainer({ serverName }: { serverName: string }) {
 	dcsMap = Kola;
   } else if (refLat >= 28 && refLat <= 39 && refLng >= 60 && refLng <= 74) {
 	dcsMap = Afghanistan;
+  } else if (refLat >= 46 && refLat <= 56 && refLng >= 3 && refLng <= 18) {
+	dcsMap = GermanyCW;
   } else {
     console.log(refLat, refLng);
     return (
