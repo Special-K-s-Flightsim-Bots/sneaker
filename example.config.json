@@ -8,5 +8,8 @@
       "enable_friendly_ground_units": true,
       "enable_enemy_ground_units": true
     }
-  ]
+  ],
+  "maps": {
+    "api_key": "your-carto-api-key"
+  }
 }

@@ -3,8 +3,12 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"log"
 	"net/http"
+	"net/url"
+	"regexp"
+	"strings"
 	"sync"
 	"time"
 
@@ -53,6 +57,47 @@ func (h *httpServer) getServerMetadata(server *TacViewServerConfig) serverMetada
 	}
 
 	return result
+}
+
+var tileCoordinatePattern = regexp.MustCompile(`^[0-9]+$`)
+
+var mapTileHTTPClient = &http.Client{Timeout: 10 * time.Second}
+
+// Proxies map basemap tiles from CARTO, attaching our API key server-side so
+// it's never exposed to the browser.
+func (h *httpServer) getMapTile(w http.ResponseWriter, r *http.Request) {
+	if h.config.Maps == nil || h.config.Maps.ApiKey == "" {
+		gores.Error(w, 404, "map tiles are not configured")
+		return
+	}
+
+	z := chi.URLParam(r, "z")
+	x := chi.URLParam(r, "x")
+	y := strings.TrimSuffix(chi.URLParam(r, "yfile"), ".png")
+
+	if !tileCoordinatePattern.MatchString(z) ||
+		!tileCoordinatePattern.MatchString(x) ||
+		!tileCoordinatePattern.MatchString(y) {
+		gores.Error(w, 400, "invalid tile coordinates")
+		return
+	}
+
+	upstreamURL := "https://a.basemaps.cartocdn.com/dark_nolabels/" +
+		z + "/" + x + "/" + y + ".png?key=" + url.QueryEscape(h.config.Maps.ApiKey)
+
+	resp, err := mapTileHTTPClient.Get(upstreamURL)
+	if err != nil {
+		gores.Error(w, 502, "failed to fetch map tile")
+		return
+	}
+	defer resp.Body.Close()
+
+	w.Header().Set("Content-Type", "image/png")
+	if resp.StatusCode == http.StatusOK {
+		w.Header().Set("Cache-Control", "public, max-age=86400")
+	}
+	w.WriteHeader(resp.StatusCode)
+	io.Copy(w, resp.Body)
 }
 
 // Returns a list of available servers
@@ -250,6 +295,7 @@ func Run(config *Config) error {
 		server.serveEmbeddedFile("index.html", w, r)
 	})
 	r.Get("/static/*", server.serveEmbeddedStaticAssets)
+	r.Get("/api/maptile/{z}/{x}/{yfile}", server.getMapTile)
 	r.Get("/api/servers", server.getServerList)
 	r.Get("/api/servers/{serverName}", server.getServer)
 	r.Get("/api/servers/{serverName}/events", server.streamServerEvents)

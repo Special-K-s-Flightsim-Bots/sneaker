@@ -5,6 +5,11 @@ type Config struct {
 	Servers    []TacViewServerConfig     `json:"servers"`
 	AssetsPath *string                   `json:"assets_path"`
 	Discord    *DiscordIntegrationConfig `json:"discord"`
+	Maps       *MapsConfig               `json:"maps"`
+}
+
+type MapsConfig struct {
+	ApiKey string `json:"api_key"`
 }
 
 type DiscordIntegrationConfig struct {

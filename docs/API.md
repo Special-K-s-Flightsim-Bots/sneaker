@@ -2,6 +2,14 @@
 
 ## Available Endpoints
 
+### Map Tile
+
+Proxies a basemap tile from CARTO, attaching the configured API key server-side (see the [Map Tiles](/README.md#map-tiles) section of the README). Returns the raw PNG image.
+
+```
+$ curl https://sneaker.example.com/api/maptile/8/135/87.png
+```
+
 ### Server List
 
 ```

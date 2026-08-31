@@ -28,6 +28,7 @@ import {
   getBearingMap,
   getCardinal,
   getFlyDistance,
+  route,
 } from "../util";
 import { Console } from "./Console";
 import { EntityInfo, iconCache, MapSimpleEntity } from "./MapEntity";
@@ -666,9 +667,7 @@ export function Map({ dcsMap }: { dcsMap: DCSMap }) {
       fpsOnInteracting: 60,
       attribution: null,
       baseLayer: new maptalks.TileLayer("base", {
-        urlTemplate:
-          "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_nolabels/{z}/{x}/{y}.png",
-        subdomains: ["a", "b", "c"],
+        urlTemplate: route("/maptile/{z}/{x}/{y}.png"),
         maxCacheSize: 2048,
         hitDetect: false,
       }),
